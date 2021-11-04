@@ -7,5 +7,5 @@ image: ## Build the Docker image.
 	docker build -t leader-election .
 
 .PHONY: deploy
-deploy: ## Deploy the leader-election app to the current k8s cluster.
+deploy: ## Deploy the leader-election example to the current k8s cluster.
 	kubectl apply -f deploy/
