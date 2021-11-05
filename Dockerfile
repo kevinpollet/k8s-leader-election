@@ -2,7 +2,7 @@ FROM golang:1.17-alpine3.14 as builder
 WORKDIR go/src/k8s-leader-election
 COPY go.mod go.sum ./
 RUN go mod download
-COPY . .
+COPY main.go .
 RUN go build -v -o /go/bin/leader-election main.go
 
 FROM alpine:3.14

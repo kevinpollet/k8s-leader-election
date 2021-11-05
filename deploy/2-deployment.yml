@@ -25,4 +25,5 @@ spec:
       serviceAccountName: leader-election
       containers:
         - name: leader-election
-          image: leader-election:latest
+          image: leader-election
+          imagePullPolicy: Never
