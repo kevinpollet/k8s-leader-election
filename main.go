@@ -8,7 +8,6 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/google/uuid"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -17,19 +16,23 @@ import (
 )
 
 var (
-	leaseLockName      = flag.String("lease-lock-name", "leader-election", "The lease lock name.")
-	leaseLockNamespace = flag.String("lease-lock-namespace", "default", "The lease lock namespace.")
+	id                 = flag.String("id", "", "Unique string identifying a lease holder.")
+	leaseLockName      = flag.String("lease-lock-name", "leader-election", "Lease lock name.")
+	leaseLockNamespace = flag.String("lease-lock-namespace", "default", "Lease lock namespace.")
 )
 
 func main() {
 	flag.Parse()
+
+	if *id == "" {
+		log.Fatal("id must not be empty")
+	}
 
 	config, err := rest.InClusterConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	id := uuid.New()
 	kubeClient := kubernetes.NewForConfigOrDie(config)
 
 	lock := &resourcelock.LeaseLock{
@@ -39,7 +42,7 @@ func main() {
 		},
 		Client: kubeClient.CoordinationV1(),
 		LockConfig: resourcelock.ResourceLockConfig{
-			Identity: id.String(),
+			Identity: *id,
 		},
 	}
 
@@ -60,8 +63,8 @@ func main() {
 				log.Println("Stop leading")
 			},
 			OnNewLeader: func(identity string) {
-				// We are the leader.
-				if identity == id.String() {
+				// I am the leader.
+				if identity == *id {
 					return
 				}
 

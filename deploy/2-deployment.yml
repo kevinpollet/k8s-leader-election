@@ -27,3 +27,11 @@ spec:
         - name: leader-election
           image: leader-election
           imagePullPolicy: Never
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+
+          args:
+            - --id=$(POD_NAME)

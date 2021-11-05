@@ -11,9 +11,8 @@ rules:
       - leases
     verbs:
       - get
-      - watch
-      - update
       - create
+      - update
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
