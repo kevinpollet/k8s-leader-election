@@ -3,7 +3,6 @@ module github.com/kevinpollet/k8s-leader-election
 go 1.17
 
 require (
-	github.com/google/uuid v1.3.0
 	k8s.io/apimachinery v0.22.3
 	k8s.io/client-go v0.22.3
 )
