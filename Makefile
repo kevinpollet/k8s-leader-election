@@ -14,10 +14,10 @@ deploy: ## Deploy the leader-election example to the current k8s cluster.
 	kubectl apply -f deploy/
 
 .PHONY: cluster
-cluster: image ## Starts a k3d cluster.
+cluster: image ## Start a k3d cluster.
 	k3d cluster create $(CLUSTER_NAME) --agents 2 --image $(CLUSTER_IMAGE) --k3s-server-arg '--no-deploy=traefik'
 	k3d image import leader-election -c kle
 
 .PHONY: cluster-delete
-cluster-delete: ## Deletes the k3d cluster.
+cluster-delete: ## Delete the k3d cluster.
 	k3d cluster delete $(CLUSTER_NAME)
